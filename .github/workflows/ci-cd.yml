@@ -38,6 +38,7 @@ jobs:
       - name: Run Bandit
         run: |
           pip install bandit
+          #bandit -r src/ --skip B104
           bandit -r src/
 
       - name: Run Semgrep
@@ -55,8 +56,9 @@ jobs:
 
       - name: Start Web Application
         run: |
-          docker build -t my-python-app .
-          docker run -d -p 8080:8080 my-python-app
+          docker build -t my-flask-app .
+          #docker run -d -p 8080:8080 my-flask-app
+          docker run -d -p 8080:8080 -e FLASK_RUN_HOST="0.0.0.0" -e FLASK_RUN_PORT="8080" my-flask-app
 
           # Use a wait loop to check if the app is up:
           until curl --silent --fail http://localhost:8080; do
