@@ -68,11 +68,12 @@ sqlalchemy.url =
 ```
 👉 Instead, we will use enviornment variable.
 
+```
 # For windows
 $env:DATABASE_URL="postgresql+psycopg2://postgres:postgres@localhost:5432/localdb"
 # For Linux
 export DATABASE_URL="postgresql+psycopg2://user:password@localhost:5432/mydb"
-
+```
 ---
 
 ## **📌 Step 4: Configure Alembic to Use SQLAlchemy Models**
@@ -109,11 +110,12 @@ alembic revision --autogenerate -m "Create external_data table"
 ```bash
 alembic upgrade head
 ```
-🎉 Your `tables` are now created!
+🎉 Your `tables` are now created! verify with below commands
 
+```
 # psql -U postgres
 # psql -U postgres -d localdb -c "select table_name from information_schema.tables where table_schema='public' ;"
-
+```
 ---
 
 Following steps will be perform during development
