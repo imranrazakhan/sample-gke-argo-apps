@@ -64,7 +64,7 @@ jobs:
           sleep 10  # Adjust the sleep time as needed
 
           docker ps -a
-          docker logs
+          docker logs $(docker ps -q --filter "ancestor=my-flask-app" --latest)
 
           # Use a wait loop to check if the app is up:
           until curl --silent --fail http://localhost:8080; do
