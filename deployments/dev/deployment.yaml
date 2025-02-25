@@ -12,8 +12,12 @@ spec:
       labels:
         app: my-python-app
     spec:
+      securityContext:
+        runAsNonRoot: true  # Fix for running container as non-root
       containers:
         - name: my-python-app
           image: 'my-jfrog-repo.com/my-python-app:latest'
+          securityContext:
+            allowPrivilegeEscalation: false  # Fix for privilege escalation
           ports:
             - containerPort: 8080
