@@ -57,8 +57,14 @@ jobs:
       - name: Start Web Application
         run: |
           docker build -t my-flask-app .
-          #docker run -d -p 8080:8080 my-flask-app
           docker run -d -p 8080:8080 -e FLASK_RUN_HOST="0.0.0.0" -e FLASK_RUN_PORT="8080" my-flask-app
+
+          # Give some time for the application to initialize
+          echo "Waiting for the Flask app to start..."
+          sleep 10  # Adjust the sleep time as needed
+
+          docker ps -a
+          docker logs
 
           # Use a wait loop to check if the app is up:
           until curl --silent --fail http://localhost:8080; do
