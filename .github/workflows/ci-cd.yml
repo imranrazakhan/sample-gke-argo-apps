@@ -54,9 +54,17 @@ jobs:
       -   name: Checkout code
           uses: actions/checkout@v3
 
-      - name: Start Web Application
+      - name: Build Docker Image
         run: |
           docker build -t my-flask-app .
+
+      - name: Scan Docker image for vulnerabilities
+        uses: anchore/scan-action@v1
+        with:
+          image: my-flask-app
+
+      - name: Start Web Application
+        run: |
           docker run -d -p 8080:8080 -e FLASK_RUN_HOST="0.0.0.0" -e FLASK_RUN_PORT="8080" my-flask-app
 
           echo "Waiting for the Flask app to start..."
@@ -69,6 +77,7 @@ jobs:
              echo "Waiting for application to start..."
              sleep 5
           done
+
 
       - name: Run OWASP ZAP
         uses: zaproxy/action-full-scan@v0.12.0
