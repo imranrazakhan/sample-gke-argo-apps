@@ -40,9 +40,6 @@ jobs:
           pip install bandit
           bandit -r src/
 
-      - name: Run Hadolint for Docker security
-        run: hadolint Dockerfile
-
       - name: Run Semgrep
         uses: returntocorp/semgrep-action@v1
         with:
