@@ -59,7 +59,7 @@ jobs:
           docker build -t my-flask-app .
 
       - name: Scan Docker image for vulnerabilities
-        uses: anchore/scan-action@v1
+        uses: anchore/scan-action@v2
         with:
           image: my-flask-app
 
