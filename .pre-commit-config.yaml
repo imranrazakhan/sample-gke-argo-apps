@@ -1,0 +1,59 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-ast # files parse as valid python.
+      - id: check-added-large-files # too large default=500kB
+      - id: check-merge-conflict # Check for files that contain merge conflict strings
+      - id: check-case-conflict # Check for file names that would conflict on a case-insensitive filesystem
+      - id: check-json # Attempts to load all json files to verify syntax
+      - id: check-yaml # Attempts to load all yaml files to verify syntax.
+      - id: debug-statements # Check for debugger imports and py37+ breakpoint() calls in python source.
+      - id: end-of-file-fixer # Makes sure files end in a newline and only a newline.
+      - id: mixed-line-ending # Replaces or checks mixed line ending.
+      - id: trailing-whitespace # Trims trailing whitespace.
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    # Ruff version.
+    rev: v0.9.6
+    hooks:
+      # Run the formatter.
+      - id: ruff-format
+      # Run the linter.
+      # this is currently excluded, because it fails in azure pipeline for unclear reasons
+      # to be included in the future, if you want to use it locally, just remove the '#' in the two lines below
+      #- id: ruff
+      #  args: [ --fix ]
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.2
+    hooks:
+      - id: gitleaks
+        name: gitleaks
+        description: Detect hardcoded secrets
+        entry: gitleaks protect --verbose --redact --staged
+        language: golang
+
+  - repo: https://github.com/psf/black
+    rev: 23.3.0
+    hooks:
+      - id: black
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.15.0  # Use the sha / tag you want to point at
+    hooks:
+      - id: mypy
+        additional_dependencies: [types-pytz]
+        args:
+          - --strict-equality
+          - --ignore-missing-imports
+          - --check-untyped-defs
+          - --disallow-untyped-defs
+          - --explicit-package-bases
+          - --no-implicit-optional
+          - --show-error-codes
+          - --warn-redundant-casts
+          - --warn-unused-ignores
+          - --allow-redefinition
+        pass_filenames: false
+        entry: mypy .

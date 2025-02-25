@@ -1,0 +1,59 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  pre-commit:
+    name: Run Pre-Commit Hooks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      - name: Install dependencies
+        run: |
+          pip install pre-commit
+          pre-commit install
+
+      - name: Run Pre-Commit Checks
+        run: pre-commit run --all-files
+
+  sast:
+    name: Static Code Analysis (SAST)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run Bandit
+        run: |
+          pip install bandit
+          bandit -r src/
+
+      - name: Run Semgrep
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: "p/default"
+
+  dast:
+    name: Dynamic Application Security Testing (DAST)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Start Web Application
+        run: |
+          docker build -t my-python-app .
+          docker run -d -p 8080:8080 my-python-app
+
+      - name: Run OWASP ZAP
+        uses: zaproxy/action-full-scan@v0.7.0
+        with:
+          target: "http://localhost:8080"
