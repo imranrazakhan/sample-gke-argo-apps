@@ -31,7 +31,7 @@ jobs:
           languages: 'python'  # Adjust for your project (javascript, java, etc.)
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+        uses: github/codeql-action/analyze@v3
 
   dast:
     name: Dynamic Application Security Testing (DAST)
