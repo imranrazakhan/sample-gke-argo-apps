@@ -7,26 +7,6 @@ on:
     branches: [main]
 
 jobs:
-  pre-commit:
-    name: Run Pre-Commit Hooks
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Install Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.9"
-
-      - name: Install dependencies
-        run: |
-          pip install pre-commit
-          pre-commit install
-
-      - name: Run Pre-Commit Checks
-        run: pre-commit run --all-files
-
   sast:
     name: Static Code Analysis (SAST)
     runs-on: ubuntu-latest
@@ -45,6 +25,14 @@ jobs:
         uses: returntocorp/semgrep-action@v1
         with:
           config: "p/default"
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: 'python'  # Adjust for your project (javascript, java, etc.)
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
 
   dast:
     name: Dynamic Application Security Testing (DAST)

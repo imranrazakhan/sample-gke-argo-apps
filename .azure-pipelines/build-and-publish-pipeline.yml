@@ -1,0 +1,47 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pr:
+  branches:
+    include:
+      - main
+
+variables:
+  python.version: '3.12'
+  feed.name: 'my-python-packages'
+
+stages:
+- stage: BuildAndPublish
+  displayName: Build and Publish Package
+  dependsOn: PreCommitChecks  # Only run if pre-commit succeeds
+  condition: succeeded()
+  jobs:
+  - job: Build
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: $(python.version)
+
+    - script: |
+        python -m pip install --upgrade pip
+        pip install build twine
+      displayName: "Install dependencies"
+
+    - script: |
+        python -m build -w
+      displayName: "Build package"
+
+    # Authenticate to Azure Artifacts
+    # This sets the PYPIRC_PATH environment variable, which contains credentials for the feed
+    - task: TwineAuthenticate@1
+      inputs:
+        artifactFeed: $(feed.name)
+      displayName: 'Twine Authenticate'
+
+    - script: |
+        twine upload -r $(feed.name) --config-file $(PYPIRC_PATH) dist/*.whl
+      displayName: "Publish to Azure Artifacts"

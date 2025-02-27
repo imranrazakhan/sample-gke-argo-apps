@@ -1,0 +1,40 @@
+name: local-db
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=localdb
+      - TZ=UTC
+    command: ["postgres", "-c", "timezone=UTC"]
+    ports:
+      - "5432:5432"
+    volumes:
+      - timescaledb-storage:/var/lib/postgresql/data
+    networks:
+      - db-network
+
+volumes:
+  timescaledb-storage: {}
+
+networks:
+  db-network:
+    driver: bridge
+
+# docker-compose up -d
+# docker-compose up -d --build
+# List All Databases
+## docker exec -it local-timescaledb psql -U postgres -l
+# Connect to Your Database and List Tables
+## docker exec -it local-timescaledb psql -U postgres -d localdb
+## \dt
+
+#Autogenerate migrations
+#Now we are ready to set up our first migration. Use the commend bellow to autogenerate the initial migrations(it will create alembic_version table with 0 row):
+##alembic revision --autogenerate -m "Create a baseline migrations"
+
+#Once the migration was created, we are able to execute the migration on the database, run the command bellow:
+## alembic upgrade head
+
+#If the command was successful, all tables are created in your database. You can revert the migrations with this command: alembic downgrade -1
