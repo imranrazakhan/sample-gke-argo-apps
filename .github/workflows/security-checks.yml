@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Security Scan
 
 on:
   push:
@@ -20,10 +20,19 @@ jobs:
           #bandit -r src/ --skip B104
           bandit -r src/
 
-      - name: Run Semgrep
-        uses: returntocorp/semgrep-action@v1
+      #- name: Run Semgrep
+      #  uses: returntocorp/semgrep-action@v1
+      #  with:
+      #    config: "p/default"
+
+      - name: Scan Kubernetes Manifests and Docker Images with Trivy
+        uses: aquasecurity/trivy-action@master
         with:
-          config: "p/default"
+          image-ref: 'my-docker-image:latest'
+          format: 'table'
+          exit-code: 1
+          ignore-unfixed: true
+
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2

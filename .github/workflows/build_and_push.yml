@@ -1,10 +1,11 @@
 name: Build and Push
 
 on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:  # Only runs when manually triggered
+  #push:
+  #  branches: [main, develop]
+  #pull_request:
+  #  branches: [main]
 
 jobs:
   build-and-tag:
