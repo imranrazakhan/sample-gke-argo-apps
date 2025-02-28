@@ -25,22 +25,33 @@ jobs:
       #  with:
       #    config: "p/default"
 
-      - name: Scan Kubernetes Manifests and Docker Images with Trivy
-        uses: aquasecurity/trivy-action@master
+      - name: Install kubeval
+        run: |
+          wget https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz
+          tar xf kubeval-linux-amd64.tar.gz
+          sudo mv kubeval /usr/local/bin
+
+      - name: Validate Kubernetes YAML with kubeval
+        run: |
+          find . -name "*.yaml" -exec kubeval {} \;
+
+      - name: Install kube-score
+        run: |
+          wget https://github.com/zegl/kube-score/releases/download/v1.16.1/kube-score_1.16.1_linux_amd64
+          chmod +x kube-score_1.16.1_linux_amd64
+          sudo mv kube-score_1.16.1_linux_amd64 /usr/local/bin/kube-score
+
+      - name: Check Kubernetes best practices with kube-score
+        run: |
+          find . -name "*.yaml" -exec kube-score score {} \;
+
+      - name: Security scan with Checkov
+        uses: bridgecrewio/checkov-action@v12
         with:
-          image-ref: 'my-docker-image:latest'
-          format: 'table'
-          exit-code: 1
-          ignore-unfixed: true
-
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
-        with:
-          languages: 'python'  # Adjust for your project (javascript, java, etc.)
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+          directory: .
+          framework: kubernetes
+          quiet: true
+          soft_fail: false
 
   dast:
     name: Dynamic Application Security Testing (DAST)
