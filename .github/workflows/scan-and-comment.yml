@@ -36,7 +36,7 @@ jobs:
 
       - name: Build Tag and push Docker Image
         env:
-          IMAGE_NAME: trialer2m3n.jfrog.io/ravi-docker/my-flask-app:${{ github.run_number }}
+          IMAGE_NAME: trialer2m3n.jfrog.io/ravi-docker/my-flask-app:1.0.0
         run: |
           docker build -t $IMAGE_NAME .
 
@@ -45,7 +45,7 @@ jobs:
           IMAGE_NAME: trialer2m3n.jfrog.io/ravi-docker/my-flask-app:${{ github.run_number }}
         uses: aquasecurity/trivy-action@0.24.0
         with:
-          image-ref: ${{ IMAGE_NAME }}
+          image-ref: trialer2m3n.jfrog.io/ravi-docker/my-flask-app:1.0.0
           format: "table"
           severity: "CRITICAL,HIGH"
           output: trivy-result.txt
