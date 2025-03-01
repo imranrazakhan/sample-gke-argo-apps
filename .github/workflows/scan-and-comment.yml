@@ -59,6 +59,13 @@ jobs:
             echo -e "## Vulnerability Scan Results\nNo vulnerabilities were detected." > formatted-trivy-result.md
           fi
 
+      - name: Check Docker best practices with Dockle
+        uses: erzz/dockle-action@v1
+        with:
+          image: ${{ env.IMAGE_NAME }}
+          failure-threshold: fatal
+          exit-code: 1
+
       - name: Comment PR with Trivy scan results
         uses: marocchino/sticky-pull-request-comment@v2
         with:
