@@ -28,20 +28,20 @@ jobs:
   scan-and-comment:
     runs-on: ubuntu-latest
     #if: github.event_name == 'pull_request' && github.event.action == 'opened'
+    env:
+      IMAGE_NAME: trialer2m3n.jfrog.io/ravi-docker/my-flask-app:${{ github.run_number }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Build Tag and push Docker Image
-        env:
-          IMAGE_NAME: trialer2m3n.jfrog.io/ravi-docker/my-flask-app:${{ github.run_number }}
         run: |
           docker build -t $IMAGE_NAME .
 
       - name: Scan image with Trivy
         uses: aquasecurity/trivy-action@0.24.0
         with:
-          image-ref: local-image:latest
+          image-ref: $IMAGE_NAME
           format: "table"
           severity: "CRITICAL,HIGH"
           output: trivy-result.txt
