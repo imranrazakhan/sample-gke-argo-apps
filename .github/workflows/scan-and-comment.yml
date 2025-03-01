@@ -35,10 +35,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Tag and push Docker Image
+        env:
+          IMAGE_NAME: trialer2m3n.jfrog.io/ravi-docker/my-flask-app:${{ github.run_number }}
         run: |
           docker build -t $IMAGE_NAME .
 
       - name: Scan image with Trivy
+        env:
+          IMAGE_NAME: trialer2m3n.jfrog.io/ravi-docker/my-flask-app:${{ github.run_number }}
         uses: aquasecurity/trivy-action@0.24.0
         with:
           image-ref: $IMAGE_NAME
