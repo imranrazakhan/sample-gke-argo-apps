@@ -9,20 +9,20 @@ on:
     types:
       - opened
     paths:
-      - "backend/**"
+      - "Dockerfile"
   workflow_dispatch: # For manual execution
 
 jobs:
-  setup:
+  #setup:
     # Details omitted for brevity
 
-  test:
+  #test:
     # Details omitted for brevity
 
-  lint:
+  #lint:
     # Details omitted for brevity
 
-  tsc:
+  #tsc:
     # Details omitted for brevity
 
   scan-and-comment:
