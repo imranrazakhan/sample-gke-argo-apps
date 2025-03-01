@@ -11,6 +11,11 @@ on:
     paths:
       - "Dockerfile"
   workflow_dispatch: # For manual execution
+    inputs:
+      environment:
+        description: 'Environment'
+        required: true
+        default: 'dev'
 
 jobs:
   #setup:
