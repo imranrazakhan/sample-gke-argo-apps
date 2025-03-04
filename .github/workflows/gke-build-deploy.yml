@@ -93,11 +93,12 @@ jobs:
         run: |
           cd ${{ github.workspace }}/k8s/overlays/dev
           kustomize edit set image PROJECT_ID-docker.pkg.dev/PROJECT_ID/ARTIFACT_REGISTRY_REPO/IMAGE:TAG=${{ env.IMAGE_NAME }}:${{ github.sha }}
+          kustomize build .
 
       # Deploy using Kustomize
-      - name: Deploy to GKE Autopilot
-        run: |
-          kubectl apply -k k8s/overlays/dev
+      #- name: Deploy to GKE Autopilot
+      #  run: |
+      #    kubectl apply -k k8s/overlays/dev
 
-      - name: Verify Deployment
-        run: kubectl get services
+      #- name: Verify Deployment
+      #  run: kubectl get services
