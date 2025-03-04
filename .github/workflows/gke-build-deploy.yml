@@ -41,7 +41,7 @@ env:
   GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}            # Name of your Autopilot cluster
   GKE_REGION: ${{ secrets.GKE_REGION }}              # Region (e.g., us-central1)
   ARTIFACT_REGISTRY_REPO: dera-gcr               # Your Artifact Registry repo name
-  IMAGE_NAME: ${{ env.GKE_REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REGISTRY_REPO }}/dera-python-app
+  #IMAGE_NAME: ${{ env.GKE_REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REGISTRY_REPO }}/dera-python-app
 
 
 jobs:
@@ -50,6 +50,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set IMAGE_NAME dynamically
+        run: |
+          echo "IMAGE_NAME=${GKE_REGION}-docker.pkg.dev/${PROJECT_ID}/${ARTIFACT_REGISTRY_REPO}/dera-python-app" >> $GITHUB_ENV
+
 
       # Setup gcloud CLI
       - name: Set up Google Cloud
