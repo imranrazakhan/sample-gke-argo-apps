@@ -55,20 +55,17 @@ jobs:
         run: |
           echo "IMAGE_NAME=${GKE_REGION}-docker.pkg.dev/${PROJECT_ID}/${ARTIFACT_REGISTRY_REPO}/dera-python-app" >> $GITHUB_ENV
 
-
-      # Setup gcloud CLI
-      - name: Set up Google Cloud
-        uses: google-github-actions/setup-gcloud@v1
-        with:
-          project_id: ${{ env.PROJECT_ID }}
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          export_default_credentials: true
-          docker_components: docker-credential-gcr  # Auto-configures Docker for Artifact Registry
-
       - name: Authenticate with Google Cloud
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      # Setup gcloud CLI
+      - name: Set up Google Cloud
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+          install_components: 'docker-credential-gcr'
 
       # Authenticate to GKE Autopilot (regional cluster)
       - name: Configure GKE Autopilot Credentials
@@ -78,6 +75,9 @@ jobs:
           cluster_name: ${{ env.GKE_CLUSTER }}
           location: ${{ env.GKE_REGION }}  # For Autopilot, use region (not zone)
           credentials: ${{ secrets.GCP_SA_KEY }}
+
+      #- name: Configure Docker for Artifact Registry
+      #  run: gcloud auth configure-docker ${{ env.GKE_REGION }}-docker.pkg.dev
 
       - name: Build and Push Image
         run: |
