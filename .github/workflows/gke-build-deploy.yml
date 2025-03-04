@@ -69,6 +69,7 @@ jobs:
       - name: Configure GKE Autopilot Credentials
         uses: google-github-actions/get-gke-credentials@v1
         with:
+          project_id: ${{ env.PROJECT_ID }}
           cluster_name: ${{ env.GKE_CLUSTER }}
           location: ${{ env.GKE_REGION }}  # For Autopilot, use region (not zone)
           credentials: ${{ secrets.GKE_SA_KEY }}
