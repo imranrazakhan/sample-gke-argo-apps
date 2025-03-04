@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gke-python-app
+spec:
+  template:
+    spec:
+      containers:
+        - name: dera-python-app
+          image: 'PROJECT_ID-docker.pkg.dev/PROJECT_ID/ARTIFACT_REGISTRY_REPO/IMAGE:TAG'

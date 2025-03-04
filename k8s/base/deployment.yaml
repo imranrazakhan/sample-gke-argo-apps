@@ -16,7 +16,7 @@ spec:
       #  runAsNonRoot: true  # Fix for running container as non-root
       containers:
         - name: my-python-app
-          image: 'my-jfrog-repo.com/my-python-app:latest'
+          image: 'GKE_REGION-docker.pkg.dev/PROJECT_ID/ARTIFACT_REGISTRY_REPO/IMAGE:TAG'
           securityContext:
             allowPrivilegeEscalation: false  # Fix for privilege escalation
           ports:

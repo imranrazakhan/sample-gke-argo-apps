@@ -21,10 +21,10 @@ jobs:
           #bandit -r src/ --skip B104
           bandit -r src/
 
-      #- name: Run Semgrep
-      #  uses: returntocorp/semgrep-action@v1
-      #  with:
-      #    config: "p/default"
+      - name: Run Semgrep
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: "p/default"
 
       - name: Install kubeval
         run: |

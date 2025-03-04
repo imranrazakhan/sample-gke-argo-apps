@@ -1,15 +1,15 @@
 name: backend-ci
 on:
-  push:
-    branches:
-      - main
-      - staging
-      - develop
-  pull_request:
-    types:
-      - opened
-    paths:
-      - "Dockerfile"
+  #push:
+  #  branches:
+  #    - main
+  #    - staging
+  #    - develop
+  #pull_request:
+  #  types:
+  #    - opened
+  #  paths:
+  #    - "Dockerfile"
   workflow_dispatch: # For manual execution
     inputs:
       environment:
