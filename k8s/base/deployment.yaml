@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: my-python-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: my-python-app
@@ -17,6 +17,9 @@ spec:
       containers:
         - name: my-python-app
           image: 'GKE_REGION-docker.pkg.dev/PROJECT_ID/ARTIFACT_REGISTRY_REPO/IMAGE:TAG'
+          env:
+            - name: FLASK_RUN_HOST
+              value: "0.0.0.0"
           securityContext:
             allowPrivilegeEscalation: false  # Fix for privilege escalation
           ports:
