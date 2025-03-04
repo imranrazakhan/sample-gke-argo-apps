@@ -1,5 +1,6 @@
 resources:
   - ../../base
 
-patches:
-  - patch-deployment.yaml
+images:
+  - name: GKE_REGION-docker.pkg.dev/PROJECT_ID/ARTIFACT_REGISTRY_REPO/IMAGE:TAG
+    newTag: latest

@@ -92,7 +92,8 @@ jobs:
       - name: Update Kustomize Image
         run: |
           cd ${{ github.workspace }}/k8s/overlays/dev
-          kustomize edit set image PROJECT_ID-docker.pkg.dev/PROJECT_ID/ARTIFACT_REGISTRY_REPO/IMAGE:TAG=${{ env.IMAGE_NAME }}:${{ github.sha }}
+          kustomize edit set image GKE_REGION-docker.pkg.dev/PROJECT_ID/ARTIFACT_REGISTRY_REPO/IMAGE:TAG=${{ env.IMAGE_NAME }}:${{ github.sha }}
+
           kustomize build .
 
       # Deploy using Kustomize
