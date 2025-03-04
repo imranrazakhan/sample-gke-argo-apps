@@ -65,6 +65,11 @@ jobs:
           export_default_credentials: true
           docker_components: docker-credential-gcr  # Auto-configures Docker for Artifact Registry
 
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GKE_SA_KEY }}
+
       # Authenticate to GKE Autopilot (regional cluster)
       - name: Configure GKE Autopilot Credentials
         uses: google-github-actions/get-gke-credentials@v2
