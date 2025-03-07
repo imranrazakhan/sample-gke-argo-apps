@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-of-apps
+  namespace: argocd  # Parent app lives in the 'argocd' namespace
+spec:
+  destination:
+    namespace: argocd   # This can stay as argocd; the child apps will define their own namespaces
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/my-org/gitops-repo.git
+    targetRevision: main
+    path: applications
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

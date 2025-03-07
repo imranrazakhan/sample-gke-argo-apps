@@ -35,3 +35,13 @@ gcloud projects add-iam-policy-binding <your-project-id> \
 
 gcloud iam service-accounts keys create key.json \
     --iam-account=github-actions-sa@YOUR_PROJECT_ID.iam.gserviceaccount.com
+
+
+kubectl create secret generic argocd-github-pat --from-literal=token=<your-github-pat> -n argocd
+
+
+argocd repo add https://github.com/<your-username>/<your-repo> \
+  --name github-repo \
+  --password <your-github-pat> \
+  --username <your-github-username> \
+  --insecure-ignore-host-key

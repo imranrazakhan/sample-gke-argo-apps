@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-app-dev
+  namespace: argocd   # Parent app will manage this child app in the argocd namespace
+spec:
+  destination:
+    namespace: dev    # Target the 'dev' namespace
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/my-org/gitops-repo.git
+    targetRevision: main
+    path: dev/helm
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
