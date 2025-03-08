@@ -32,7 +32,3 @@ resource "google_container_cluster" "gke_autopilot_prod" {
   network    = data.terraform_remote_state.shared_infra.outputs["vpc_id"]
   subnetwork = data.terraform_remote_state.shared_infra.outputs["prod_subnet_id"]
 }
-
-output "prod_gke_cluster_endpoint" {
-  value = google_container_cluster.gke_autopilot_prod.endpoint
-}
