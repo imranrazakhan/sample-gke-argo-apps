@@ -33,16 +33,19 @@ gcloud projects add-iam-policy-binding <your-project-id> \
     --member="serviceAccount:github-actions-sa@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
     --role="roles/artifactregistry.writer"
 
-gcloud projects add-iam-policy-binding dera-452321 --member="serviceAccount:github-actions-sa@dera-452321.iam.gserviceaccount.com" --role="roles/compute.networkAdmin"
+gcloud projects add-iam-policy-binding <your-project-id> --member="serviceAccount:github-actions-sa@<your-project-id>.iam.gserviceaccount.com" --role="roles/compute.networkAdmin"
 
-gcloud projects add-iam-policy-binding dera-452321 \
+gcloud projects add-iam-policy-binding <your-project-id> \
   --member="serviceAccount:<YOUR-SERVICE-ACCOUNT>@<YOUR-PROJECT>.iam.gserviceaccount.com" \
   --role="roles/compute.networkAdmin"
 
-gcloud projects add-iam-policy-binding dera-452321 \
-  --member="serviceAccount:github-actions-sa@dera-452321.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding <your-project-id> \
+  --member="serviceAccount:github-actions-sa@<your-project-id>.iam.gserviceaccount.com" \
   --role="roles/compute.securityAdmin"
 
+gcloud projects add-iam-policy-binding <your-project-id> \
+  --member="serviceAccount:github-actions-sa@<your-project-id>.iam.gserviceaccount.com" \
+  --role="roles/iam.serviceAccountUser"
 
 
 gcloud iam service-accounts keys create key.json \
