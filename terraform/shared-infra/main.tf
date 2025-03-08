@@ -1,5 +1,4 @@
 # shared-infra/main.tf
-
 provider "google" {
   project     = var.gcp_project_id
   region      = var.gke_region
@@ -45,4 +44,5 @@ resource "google_compute_firewall" "gke_firewall" {
   }
 
   source_ranges = ["0.0.0.0/0"]
+
 }
