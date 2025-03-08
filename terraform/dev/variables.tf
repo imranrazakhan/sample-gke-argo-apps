@@ -9,3 +9,9 @@ variable "gke_region" {
   type        = string
   default     = "us-central1"
 }
+
+variable "vpc_name" {
+  description = "Name of the shared VPC"
+  type        = string
+  default     = "shared-vpc"
+}

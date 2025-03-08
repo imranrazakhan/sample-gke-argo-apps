@@ -33,11 +33,26 @@ gcloud projects add-iam-policy-binding <your-project-id> \
     --member="serviceAccount:github-actions-sa@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
     --role="roles/artifactregistry.writer"
 
+gcloud projects add-iam-policy-binding dera-452321 --member="serviceAccount:github-actions-sa@dera-452321.iam.gserviceaccount.com" --role="roles/compute.networkAdmin"
+
+gcloud projects add-iam-policy-binding dera-452321 \
+  --member="serviceAccount:<YOUR-SERVICE-ACCOUNT>@<YOUR-PROJECT>.iam.gserviceaccount.com" \
+  --role="roles/compute.networkAdmin"
+
+gcloud projects add-iam-policy-binding dera-452321 \
+  --member="serviceAccount:github-actions-sa@dera-452321.iam.gserviceaccount.com" \
+  --role="roles/compute.securityAdmin"
+
+
+
 gcloud iam service-accounts keys create key.json \
     --iam-account=github-actions-sa@YOUR_PROJECT_ID.iam.gserviceaccount.com
 
 
+
+
 kubectl create secret generic argocd-github-pat --from-literal=token=<your-github-pat> -n argocd
+
 
 
 argocd repo add https://github.com/<your-username>/<your-repo> \

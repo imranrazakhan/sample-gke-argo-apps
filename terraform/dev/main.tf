@@ -20,8 +20,7 @@ resource "google_container_cluster" "gke_autopilot_dev" {
   name     = "gke-autopilot-cluster-dev"
   location = var.gke_region
 
-  # GKE Autopilot with private mode
-  autopilot = true
+  enable_autopilot = true
   private_cluster_config {
     enable_private_nodes    = true
     enable_private_endpoint = true
