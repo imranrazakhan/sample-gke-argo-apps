@@ -64,7 +64,8 @@ jobs:
           severity: "CRITICAL,HIGH"
           output: trivy-licenses.txt
           scan-type: "image"
-          license: "true"  # Enabling license scan
+          args: "--license"  # Enable license scanning with Trivy
+
 
       - name: Check Trivy result files
         run: |
