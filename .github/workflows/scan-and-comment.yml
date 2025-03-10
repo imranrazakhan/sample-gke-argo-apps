@@ -52,9 +52,26 @@ jobs:
           format: "table"
           severity: "CRITICAL,HIGH"
           output: trivy-result.txt
+          scan-type: "image"  # To scan the image for vulnerabilities and licenses
 
-      - name: Check Trivy result file
-        run: cat trivy-result.txt
+      - name: Scan image for licenses with Trivy
+        env:
+          IMAGE_NAME: trialer2m3n.jfrog.io/ravi-docker/my-flask-app:${{ github.run_number }}
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          image-ref: ${{ env.IMAGE_NAME }}
+          format: "table"
+          severity: "CRITICAL,HIGH"
+          output: trivy-licenses.txt
+          scan-type: "image"
+          license: "true"  # Enabling license scan
+
+      - name: Check Trivy result files
+        run: |
+          echo "Vulnerability Scan Results:"
+          cat trivy-result.txt
+          echo "License Scan Results:"
+          cat trivy-licenses.txt
 
       - name: Format Trivy Scan Result
         run: |
@@ -62,6 +79,12 @@ jobs:
             echo -e "## Vulnerability Scan Results\n<details><summary>Details</summary>\n\n\`\`\`\n$(cat trivy-result.txt)\n\`\`\`\n</details>" > formatted-trivy-result.md
           else
             echo -e "## Vulnerability Scan Results\nNo vulnerabilities were detected." > formatted-trivy-result.md
+          fi
+
+          if [ -s trivy-licenses.txt ]; then
+            echo -e "## License Scan Results\n<details><summary>Details</summary>\n\n\`\`\`\n$(cat trivy-licenses.txt)\n\`\`\`\n</details>" >> formatted-trivy-result.md
+          else
+            echo -e "## License Scan Results\nNo license issues were found." >> formatted-trivy-result.md
           fi
 
       - name: Check Docker best practices with Dockle
