@@ -100,10 +100,8 @@ jobs:
         with:
           path: formatted-trivy-result.md
 
-      - name: 'Dependency Review'
-        uses: actions/dependency-review-action@v4
-        with:
-          allow-licenses: MIT
+      - name: License compliance check
+        uses: mikaelvesavuori/license-compliance-action@v1
 
       - name: Clean up Trivy result file
         run: rm -f trivy-result.txt formatted-trivy-result.md
