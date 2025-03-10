@@ -88,29 +88,8 @@ jobs:
             echo -e "## License Scan Results\nNo license issues were found." >> formatted-trivy-result.md
           fi
 
-      - name: Check licenses in SBOM
-        if: exists('Dockerfile')
-        run: |
-          # Install Syft for license analysis
-          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
-
-          # Generate license list
-          syft my-app:${{ github.sha }} -o json | jq '.artifacts[].licenses' > licenses.json
-
-          # Check against allowed licenses (customize this list)
-          ALLOWED_LICENSES="MIT Apache-2.0 BSD-3-Clause BSD-2-Clause ISC"
-          BAD_LICENSES=$(jq -r '.[] | select(. != null) | .[0]' licenses.json | sort | uniq | grep -vE "$(echo $ALLOWED_LICENSES | sed 's/ /|/g')")
-
-          if [ -n "$BAD_LICENSES" ]; then
-            echo "🚫 Forbidden licenses found: $BAD_LICENSES"
-            exit 1
-          fi
-
-      - name: Upload SBOM artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: sbom-report
-          path: sbom.json
+      - name: License compliance check
+        uses: mikaelvesavuori/license-compliance-action@v1
 
       - name: Clean up Trivy result file
         run: rm -f trivy-result.txt formatted-trivy-result.md
