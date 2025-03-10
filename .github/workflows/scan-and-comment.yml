@@ -88,8 +88,8 @@ jobs:
             echo -e "## License Scan Results\nNo license issues were found." >> formatted-trivy-result.md
           fi
 
-      - name: License compliance check
-        uses: mikaelvesavuori/license-compliance-action@v1
+      - name: 'Dependency Review'
+        uses: actions/dependency-review-action@v4
 
       - name: Clean up Trivy result file
         run: rm -f trivy-result.txt formatted-trivy-result.md
