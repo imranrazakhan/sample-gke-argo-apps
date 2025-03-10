@@ -1,8 +1,8 @@
 name: backend-ci
 on:
-  #push:
-  #  branches:
-  #    - main
+  push:
+    branches:
+      - main
   #    - staging
   #    - develop
   #pull_request:
@@ -87,6 +87,18 @@ jobs:
           else
             echo -e "## License Scan Results\nNo license issues were found." >> formatted-trivy-result.md
           fi
+
+      - name: Check Docker best practices with Dockle
+        uses: erzz/dockle-action@v1
+        with:
+          image: ${{ env.IMAGE_NAME }}
+          failure-threshold: fatal
+          exit-code: 1
+
+      - name: Comment PR with Trivy scan results
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          path: formatted-trivy-result.md
 
       - name: 'Dependency Review'
         uses: actions/dependency-review-action@v4
