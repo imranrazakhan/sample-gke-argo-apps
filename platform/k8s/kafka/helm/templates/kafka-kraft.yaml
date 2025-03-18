@@ -1,1 +1,18 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: {{ .Values.kafka.name }}
+  namespace: {{ .Values.kafka.namespace }}
+spec:
+  kafka:
+    clusterId: {{ .Values.kafka.clusterId }}
+    metadataMode: "kraft"
+    storage:
+      type: persistent-claim
+      size: {{ .Values.kafka.storageSize }}
+    config:
+      auto.create.topics.enable: {{ .Values.kafka.autoCreateTopics }}
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
 
