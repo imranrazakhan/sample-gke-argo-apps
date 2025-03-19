@@ -1,5 +1,5 @@
 kafka:
-  name: my-kafka
+  name: doc-kafka
   namespace: kafka
   clusterId: "1234567890abcdef"
   replicas: 3
@@ -7,7 +7,7 @@ kafka:
   autoCreateTopics: true
 
   topic:
-    name: my-topic
+    name: posts
     partitions: 3
     replicas: 3
     retentionMs: 604800000  # 7 days
