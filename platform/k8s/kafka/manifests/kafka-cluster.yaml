@@ -1,0 +1,28 @@
+apiVersion: kafka.strimzi.io/v1beta1
+kind: Kafka
+metadata:
+  name: kafka-cluster
+  namespace: kafka
+spec:
+  kafka:
+    replicas: 3
+    storage:
+      type: ephemeral
+      size: 10Gi
+    listeners:
+      plain:
+        port: 9092
+        tls: false
+      external:
+        port: 9094
+        type: nodeport
+        tls: false
+    logRetention:
+      hours: 24
+    config:
+      log.dirs: "/tmp/kafka-logs"
+    zookeeper:
+      replicas: 0  # No ZooKeeper in KRaft mode
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
