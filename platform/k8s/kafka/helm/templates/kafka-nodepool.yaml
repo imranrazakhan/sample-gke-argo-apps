@@ -1,15 +1,18 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaNodePool
 metadata:
-  name: kafka-nodes
-  namespace: {{ .Values.kafka.namespace }}
+  name: dual-role
+  labels:
+    strimzi.io/cluster: doc-kafka-cluster
 spec:
-  clusterName: {{ .Values.kafka.name }}
-  replicas: {{ .Values.kafka.replicas }}
+  replicas: 3
   roles:
-    - broker
     - controller
+    - broker
   storage:
-    type: persistent-claim
-    size: {{ .Values.kafka.storageSize }}
-
+    type: jbod
+    volumes:
+      - id: 0
+        type: ephemeral
+        size: 10Gi
+        kraftMetadata: shared
