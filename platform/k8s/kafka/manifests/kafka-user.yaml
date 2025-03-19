@@ -1,0 +1,18 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: doc-user
+  namespace: kafka
+  labels:
+    strimzi.io/cluster: doc-kafka-cluster
+spec:
+  authentication:
+    type: tls
+  authorization:
+    type: simple
+    acls:
+      - operation: All
+        resource:
+          type: topic
+          name: posts
+        permission: allow
